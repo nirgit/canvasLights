@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Canvas play</title>
+
+  <style media="screen">
+    body {
+      background-color: black;
+    }
+
+    h1 {
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Lights</h1>
+
+  <button onclick="paint()">Paint</button>
+  <div class="">
+    <canvas id='c' width="800px" height="600px"></canvas>
+  </div>
+
+  <script>
+    var WIDTH = 800;
+    var HEIGHT = 600;
+
+    var canvas = document.getElementById('c');
+    var ctx = canvas.getContext('2d');
+    // ctx.scale(1,1);
+
+    function paint() {
+      ctx.save();
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, WIDTH, HEIGHT);
+      ctx.scale(1, 1);
+
+      var COLORS = ['white', 'lightblue', 'lightyellow', 'purple'];
+
+      for (var i = 10; i > 0; i--) {
+        var color = COLORS[Math.floor(Math.random() * COLORS.length)];
+        createNebula(Math.random() * WIDTH, Math.random() * HEIGHT, color, ctx);
+      }
+      ctx.restore();
+    }
+
+    function createNebula(x, y, color, ctx) {
+      var RADIUS = 50 + Math.random() * 300;
+
+      for (var rad = RADIUS; rad > 0; rad -= 3) {
+        ctx.beginPath();
+        ctx.arc(x, y, rad, 0, 2 * Math.PI);
+        ctx.globalAlpha = 1 / rad;
+        ctx.fillStyle = color;
+        ctx.shadowBlur = rad * 10;
+        ctx.shadowColor = color;
+        ctx.fill();
+        ctx.closePath();
+      }
+    }
+  </script>
+</body>
+
+</html>
