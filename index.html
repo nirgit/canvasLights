@@ -28,24 +28,28 @@
   <script>
     var WIDTH = 800;
     var HEIGHT = 600;
+    var NUMBER_OF_LIGHTS = 8;
+    var TIME_LIMIT_IN_MS = 5;
+    var COLORS = ['white', 'lightblue', 'lightyellow', 'purple'];
 
     var canvas = document.getElementById('c');
     var ctx = canvas.getContext('2d');
     // ctx.scale(1,1);
 
     function paint() {
+      var timeStart = window.performance.now();
       ctx.save();
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, WIDTH, HEIGHT);
-      ctx.scale(1, 1);
-
-      var COLORS = ['white', 'lightblue', 'lightyellow', 'purple'];
-
-      for (var i = 10; i > 0; i--) {
+      var timeEnd = window.performance.now();
+      for (var i = NUMBER_OF_LIGHTS; i > 0 && (timeEnd - timeStart) < TIME_LIMIT_IN_MS; i--) {
         var color = COLORS[Math.floor(Math.random() * COLORS.length)];
         createNebula(Math.random() * WIDTH, Math.random() * HEIGHT, color, ctx);
+        timeEnd = window.performance.now();
       }
       ctx.restore();
+      timeEnd = window.performance.now();
+      console.log('Took: ' + (timeEnd-timeStart) + ' ms');
     }
 
     function createNebula(x, y, color, ctx) {
